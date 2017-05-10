@@ -22,16 +22,6 @@ if __name__ == "__main__":
             vswitch_manager = InfrasimvSwitchManager(
                 "./network_configuration.yml")
             vswitch_manager.create()
-            rt, out, err = start_process(["service", dhcp_service, "stop"])
-            if rt != 0:
-                print rt, err
-            shutil.move(dhcpd_config, dhcpd_config_bk)
-            with open(dhcpd_config, "w+") as f:
-                f.write("INTERFACES=\"br-int\"\n")
-
-            rt, out, err = start_process(["service", dhcp_service, "start"])
-            if rt != 0:
-                raise Exception(err)
             time.sleep(3)
             inm = InfrasimNamespaceManager(
                 "./network_configuration.yml", vswitch_manager.get_vswitch_int())
