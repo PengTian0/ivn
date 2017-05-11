@@ -40,12 +40,13 @@ if __name__ == "__main__":
                 shutil.move(dhcpd_config_bk, dhcpd_config)
             regex = r"(INTERFACES=)\"(.*)\"$"
             nic = None
-            with open(dhcpd_config, "r+") as f:
-                for line in f:
-                    m = re.search(regex, line)
-                    if m:
-                        nic = m.group(2)
-                        break
+            if os.path.exists(dhcpd_config):
+                with open(dhcpd_config, "r+") as f:
+                    for line in f:
+                        m = re.search(regex, line)
+                        if m:
+                            nic = m.group(2)
+                            break
             print "You might need to check your original dhcpd nic {}" \
                   " and bring it up again.".format(nic)
         else:
